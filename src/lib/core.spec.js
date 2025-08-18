@@ -1,11 +1,38 @@
 import { describe, it, expect } from 'vitest';
-import { fitRectToContainer, lerp } from './core.js';
+import { clampRectToBounds, fitRectToContainer, lerp } from './core.js';
 
-describe('lerp', () => {
-	it('interpolates numbers linearly', () => {
-		expect(lerp(0, 10, 0)).toBe(0);
-		expect(lerp(0, 10, 1)).toBe(10);
-		expect(lerp(10, 20, 0.5)).toBe(15);
+describe('clampRectToBounds', () => {
+	const W = 100;
+	const H = 80;
+
+	it('returns the same rect when fully inside', () => {
+		const r = { x: 10, y: 12, width: 30, height: 20 };
+		expect(clampRectToBounds(r, W, H)).toEqual(r);
+	});
+
+	it('clamps when partially outside on left/top', () => {
+		const r = { x: -20, y: -10, width: 50, height: 40 };
+		expect(clampRectToBounds(r, W, H)).toEqual({ x: 0, y: 0, width: 30, height: 30 });
+	});
+
+	it('clamps when partially outside on right/bottom', () => {
+		const r = { x: 80, y: 60, width: 50, height: 40 };
+		expect(clampRectToBounds(r, W, H)).toEqual({ x: 80, y: 60, width: 20, height: 20 });
+	});
+
+	it('falls back to full container when completely outside (left)', () => {
+		const r = { x: -200, y: 10, width: 50, height: 20 };
+		expect(clampRectToBounds(r, W, H)).toEqual({ x: 0, y: 0, width: W, height: H });
+	});
+
+	it('falls back to full container when width or height collapses to 0', () => {
+		const r = { x: 0, y: 0, width: 0, height: 10 };
+		expect(clampRectToBounds(r, W, H)).toEqual({ x: 0, y: 0, width: W, height: H });
+	});
+
+	it('handles exact edge-touch rectangles (no change)', () => {
+		const r = { x: 0, y: 0, width: W, height: H };
+		expect(clampRectToBounds(r, W, H)).toEqual(r);
 	});
 });
 
@@ -81,5 +108,13 @@ describe('fitRectToContainer', () => {
 		expect(() =>
 			fitRectToContainer({ x: 0, y: 0, width: 10, height: 10 }, { width: 0, height: 600 })
 		).toThrow();
+	});
+});
+
+describe('lerp', () => {
+	it('interpolates numbers linearly', () => {
+		expect(lerp(0, 10, 0)).toBe(0);
+		expect(lerp(0, 10, 1)).toBe(10);
+		expect(lerp(10, 20, 0.5)).toBe(15);
 	});
 });

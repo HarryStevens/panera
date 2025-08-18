@@ -4,7 +4,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { setContext } from 'svelte';
 
-	import { fitRectToContainer, lerp } from './core.js';
+	import { clampRectToBounds, fitRectToContainer, lerp } from './core.js';
 
 	/**
 	 * @typedef {{ x:number, y:number, width:number, height:number }} Rect
@@ -81,9 +81,9 @@
 		if (!($W > 0 && $H > 0)) return api();
 		if (!(objW > 0 && objH > 0)) return api();
 
-		const target = { x: objX, y: objY, width: objW, height: objH };
+		const raw = { x: objX, y: objY, width: objW, height: objH };
+		const target = localBound ? clampRectToBounds(raw, $W, $H) : raw;
 		const end = fit(target, localBound);
-
 		debugRect.set(localDebug ? target : null);
 
 		const opts = pickOpts(d, e);
@@ -109,8 +109,10 @@
 		if (!(a?.width > 0 && a?.height > 0)) return api();
 		if (!(b?.width > 0 && b?.height > 0)) return api();
 
-		const fa = fit(a, localBound);
-		const fb = fit(b, localBound);
+		const A = localBound ? clampRectToBounds(a, $W, $H) : a;
+		const B = localBound ? clampRectToBounds(b, $W, $H) : b;
+		const fa = fit(A, localBound);
+		const fb = fit(B, localBound);
 
 		// clamp input t, then ease it (don’t clamp after ease so “elastic/back” can overshoot if desired)
 		const tc = Math.max(0, Math.min(1, t));
@@ -124,10 +126,10 @@
 
 		if (localDebug) {
 			debugRect.set({
-				x: lerp(a.x, b.x, te),
-				y: lerp(a.y, b.y, te),
-				width: lerp(a.width, b.width, te),
-				height: lerp(a.height, b.height, te)
+				x: lerp(A.x, B.x, te),
+				y: lerp(A.y, B.y, te),
+				width: lerp(A.width, B.width, te),
+				height: lerp(A.height, B.height, te)
 			});
 		} else {
 			debugRect.set(null);
@@ -164,6 +166,7 @@
 
 <!-- Wrapper just provides context + slots the layers -->
 <div
+	class="panera"
 	style="position:relative; width: {width ? `${width}px` : '100%'}; height: {height
 		? `${height}px`
 		: '100%'};"
