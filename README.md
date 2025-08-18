@@ -97,11 +97,11 @@ Peer requirement: svelte ^4 || ^5
 ## Development
 
 ```bash
-pnpm dev          # run the SvelteKit demo (if you keep one)
 pnpm format       # prettier
 pnpm lint         # prettier check + eslint
 pnpm test         # vitest unit tests
 pnpm prepack      # build library to dist/ (svelte-package + publint)
+pnpm pack         # output a tarball
 ```
 
 ### Tests
