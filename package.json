@@ -1,7 +1,7 @@
 {
 	"name": "panera",
 	"version": "0.0.1",
-  "license": "MIT",
+	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -76,5 +76,10 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"repository": "github:harrystevens/panera",
+	"homepage": "https://panera-two.vercel.app/?path=/story/panera-interpolate--canvas",
+	"bugs": {
+		"url": "https://github.com/harrystevens/panera/issues"
 	}
 }
