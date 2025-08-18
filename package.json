@@ -78,7 +78,7 @@
 		]
 	},
 	"repository": "github:harrystevens/panera",
-	"homepage": "https://panera-two.vercel.app/?path=/story/panera-interpolate--canvas",
+	"homepage": "https://panera-two.vercel.app/",
 	"bugs": {
 		"url": "https://github.com/harrystevens/panera/issues"
 	}
