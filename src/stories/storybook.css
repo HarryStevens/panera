@@ -1,0 +1,46 @@
+body {
+	font-family: sans-serif;
+}
+
+.g-controls {
+	font-size: 14px;
+}
+
+.g-buttons {
+	margin-top: 10px;
+}
+
+.g-input {
+	display: inline-block;
+	margin-right: 30px;
+	vertical-align: middle;
+}
+
+input#input-duration {
+	width: 100px;
+}
+
+.g-container {
+	font-family: var(--g-franklin);
+}
+
+.g-wrapper {
+	border: 1px solid black;
+}
+
+.g-title {
+	font-weight: bold;
+}
+
+.g-mb-2 {
+	margin-bottom: 2px;
+}
+.g-mb-10 {
+	margin-bottom: 10px;
+}
+.g-mt-2 {
+	margin-top: 2px;
+}
+.g-mt-10 {
+	margin-top: 10px;
+}
