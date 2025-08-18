@@ -58,14 +58,14 @@
 		if (!rect || !circle) return;
 
 		const rb = rect.getBBox();
-		ctx.fillStyle = 'lime';
+		ctx.fillStyle = 'tomato';
 		ctx.fillRect(rb.x, rb.y, rb.width, rb.height);
 
 		const cb = circle.getBBox();
 		const r = cb.width / 2;
 		ctx.beginPath(); // safe against path accumulation
 		ctx.arc(cb.x + r, cb.y + r, r, 0, Math.PI * 2);
-		ctx.fillStyle = 'blue';
+		ctx.fillStyle = 'steelblue';
 		ctx.fill();
 	}
 </script>
@@ -133,7 +133,7 @@
 				<Svg>
 					<rect
 						bind:this={rect}
-						fill="lime"
+						fill="tomato"
 						width={width * 0.25}
 						height={height * 0.4}
 						x={width * 0.1}
@@ -141,8 +141,8 @@
 					/>
 					<circle
 						bind:this={circle}
-						fill="blue"
-						r={width * 0.05}
+						fill="steelblue"
+						r={height * 0.2}
 						cx={width * 0.8}
 						cy={height * 0.55}
 					/>
@@ -176,17 +176,22 @@
 			>
 				<Html>
 					<div
-						style="background: lime; position: absolute; width: {width * 0.25}px; height: {height *
-							0.4}px; left: {width * 0.1}px; top: {height * 0.1}px;"
+						style="
+            background: tomato;
+            position: absolute;
+            width: {width * 0.25}px;
+            height: {height *0.4}px;
+            left: {width * 0.1}px;
+            top: {height * 0.1}px;"
 					/>
 					<div
 						style="
-          background: blue;
+          background: steelblue;
           position: absolute;
-          width: {width * 0.1}px;
-          height: {width * 0.1}px;
-          left: {width * 0.75}px;
-          top: {height * 0.55 - width * 0.05}px;
+          width: {height * 0.4}px;
+          height: {height * 0.4}px;
+          left: {width * 0.8 - height * 0.2}px;
+          top: {height * 0.4}px;
           border-radius: 50%;"
 					></div>
 				</Html>
