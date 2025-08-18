@@ -12,8 +12,6 @@ Peer requirement: svelte ^4 || ^5
 
 ## Example
 
-See more examples here: 
-
 ```svelte
 <script>
 	import { Panera, Svg } from 'panera';
@@ -37,6 +35,8 @@ See more examples here:
 	</Svg>
 </Panera>
 ```
+
+[See more examples here](https://panera-two.vercel.app/?path=/story/panera-interpolate--canvas)
 
 ## API
 
