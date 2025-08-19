@@ -17,44 +17,44 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  includeIgnoreFile(gitignorePath),
+	includeIgnoreFile(gitignorePath),
 
-  js.configs.recommended,
-  ...svelte.configs.recommended,
-  ...storybook.configs['flat/recommended'],
+	js.configs.recommended,
+	...svelte.configs.recommended,
+	...storybook.configs['flat/recommended'],
 
-  // Turn off stylistic rules that conflict with Prettier (for JS + Svelte)
-  ...svelte.configs.prettier,
-  prettierConfig,
+	// Turn off stylistic rules that conflict with Prettier (for JS + Svelte)
+	...svelte.configs.prettier,
+	prettierConfig,
 
-  {
-    files: ['**/*.{js,ts,svelte}'],
-    languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
-    },
-    plugins: {
-      prettier: prettierPlugin
-    },
-    rules: {
-      'prettier/prettier': 'error'
-    }
-  },
-  {
-    files: ['**/*.svelte', '**/*.svelte.js'],
-    languageOptions: { parserOptions: { svelteConfig } }
-  },
-  {
-    files: ['**/*.{test,spec}.{js,ts}'],
-    languageOptions: {
-      globals: { ...globals.vitest }
-    }
-  },
-  {
-    files: ['**/*.json'],
-    languageOptions: { parser: jsoncParser },
-    plugins: { prettier: prettierPlugin, jsonc },
-    rules: {
-      'prettier/prettier': 'error'
-    }
-  }
+	{
+		files: ['**/*.{js,ts,svelte}'],
+		languageOptions: {
+			globals: { ...globals.browser, ...globals.node }
+		},
+		plugins: {
+			prettier: prettierPlugin
+		},
+		rules: {
+			'prettier/prettier': 'error'
+		}
+	},
+	{
+		files: ['**/*.svelte', '**/*.svelte.js'],
+		languageOptions: { parserOptions: { svelteConfig } }
+	},
+	{
+		files: ['**/*.{test,spec}.{js,ts}'],
+		languageOptions: {
+			globals: { ...globals.vitest }
+		}
+	},
+	{
+		files: ['**/*.json'],
+		languageOptions: { parser: jsoncParser },
+		plugins: { prettier: prettierPlugin, jsonc },
+		rules: {
+			'prettier/prettier': 'error'
+		}
+	}
 ];
