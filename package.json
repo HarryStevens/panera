@@ -15,12 +15,12 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"lint": "pnpm run format:check && eslint .",
+		"lint": "eslint .",
 		"test:unit": "vitest",
 		"test": "pnpm run -s test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"prepublishOnly": "pnpm run lint && pnpm run test",
+		"prepublishOnly": "pnpm run lint && pnpm run check && pnpm run test",
 		"preversion": "pnpm run lint && pnpm run test"
 	},
 	"files": [
