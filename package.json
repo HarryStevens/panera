@@ -14,13 +14,14 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"format": "prettier --write .",
-    "format:check": "prettier --check .",
-		"lint": "eslint .",
+		"format:check": "prettier --check .",
+		"lint": "pnpm run format:check && eslint .",
 		"test:unit": "vitest",
 		"test": "pnpm run -s test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-    "prepublishOnly": "pnpm run format:check && pnpm run lint && pnpm run test"
+		"prepublishOnly": "pnpm run lint && pnpm run test",
+    "preversion": "pnpm run lint && pnpm run test"
 	},
 	"files": [
 		"dist",
@@ -54,6 +55,7 @@
 		"@types/node": "^22",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
+		"eslint-plugin-prettier": "^5.5.4",
 		"eslint-plugin-storybook": "^9.1.2",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
