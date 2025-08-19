@@ -26,10 +26,13 @@
 	const y = tweened(0, { duration: 0 });
 
 	// width/height as stores so layers react when they change
+	/** @type {import('svelte/store').Writable<number>} */
 	const W = writable(width);
+	/** @type {import('svelte/store').Writable<number>} */
 	const H = writable(height);
-	$: W.set(width);
-	$: H.set(height);
+
+	$: W.set(width ?? 0);
+	$: H.set(height ?? 0);
 
 	// debug rect shared to layers
 	const debugRect = writable(/** @type {Rect|null} */ (null));
