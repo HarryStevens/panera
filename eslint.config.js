@@ -10,6 +10,8 @@ import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import svelteConfig from './svelte.config.js';
 import prettierPlugin from 'eslint-plugin-prettier';
+import jsonc from 'eslint-plugin-jsonc';
+import jsoncParser from 'jsonc-eslint-parser';
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
@@ -40,5 +42,19 @@ export default [
   {
     files: ['**/*.svelte', '**/*.svelte.js'],
     languageOptions: { parserOptions: { svelteConfig } }
+  },
+  {
+    files: ['**/*.{test,spec}.{js,ts}'],
+    languageOptions: {
+      globals: { ...globals.vitest }
+    }
+  },
+  {
+    files: ['**/*.json'],
+    languageOptions: { parser: jsoncParser },
+    plugins: { prettier: prettierPlugin, jsonc },
+    rules: {
+      'prettier/prettier': 'error'
+    }
   }
 ];
