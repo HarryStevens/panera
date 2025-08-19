@@ -12,6 +12,7 @@
 		<slot />
 		{#if $debugRect}
 			<rect
+				class="panera-svg-debug"
 				x={$debugRect.x}
 				y={$debugRect.y}
 				width={$debugRect.width}

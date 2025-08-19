@@ -23,7 +23,7 @@ Peer requirement: svelte ^4 || ^5
 		pan.reset();
 	}
 	function to() {
-		pan.to({ x: 80, y: 40, width: 200, height: 120, duration: 600 });
+		pan.to({ x: 80, y: 40, width: 200, height: 120 }, { duration: 600 });
 	}
 </script>
 
@@ -42,7 +42,7 @@ Peer requirement: svelte ^4 || ^5
 
 - Provider: `<Panera />`
 - Layers: `<Svg />`, `<Canvas />`, `<Html />`
-- Control via `bind:this`: `to()`, `reset()`, `interpolate()`, `getState()`
+- Control via `bind:this`: `to()`, `reset()`, `interpolate()`, `getView()`, `getBox()`
 
 ### `<Panera />` props
 
@@ -59,8 +59,9 @@ Peer requirement: svelte ^4 || ^5
   `opts = { duration?: number, easing?: (t)=>number, debug?: boolean }`<br/>
   Reset the view back to k=1, x=0, y=0.
 
-- `to(rectAndOpts)`<br/>
-  `rectAndOpts = { x, y, width, height, duration?, easing?, debug?, bound? }`<br/>
+- `to(rect, opts?)`<br/>
+  `rect = {x, y, width, height}`<br/>
+  `opts = { duration?, easing?, debug?, bound? }`<br/>
   Tweens to the fitted view of the rectangle.
 
 - `interpolate(a, b, opts?)`<br/>
@@ -68,8 +69,11 @@ Peer requirement: svelte ^4 || ^5
   `opts = { t?: number, easing?: (t)=>number, bound?: boolean, debug?: boolean }`<br/>
   Instant scrub (no tween). Fits both a and b, then blends view using t (after easing).
 
-- `getState(): Readable<{ k:number, x:number, y:number }>`<br/>
+- `getView(): Readable<{ k:number, x:number, y:number }>`<br/>
   A Svelte store reflecting the current view.
+
+- `getBox(): Readable<{ x:number, y:number, width:number, height: number }>`<br/>
+  A Svelte store reflecting the current bounding box.
 
 ### Layers
 

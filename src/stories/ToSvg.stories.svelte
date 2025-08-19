@@ -14,7 +14,7 @@
 		pan.reset();
 	}
 	function to() {
-		pan.to({ x: 80, y: 40, width: 200, height: 120, duration: 600 });
+		pan.to({ x: 80, y: 40, width: 200, height: 120 }, { duration: 600 });
 	}
 </script>
 

@@ -34,7 +34,7 @@
 
 		{#if $debugRect}
 			<div
-				class="panera-debugger"
+				class="panera-html-debug"
 				style="
           position: absolute;
           left: {$debugRect.x}px;

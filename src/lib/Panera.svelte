@@ -35,6 +35,12 @@
 	$: W.set(width ?? 0);
 	$: H.set(height ?? 0);
 
+	// Internal view stores
+	const bx = tweened(0, { duration: 0 });
+	const by = tweened(0, { duration: 0 });
+	const bw = tweened($W ?? 0, { duration: 0 });
+	const bh = tweened($H ?? 0, { duration: 0 });
+
 	// debug rect shared to layers
 	const debugRect = writable(/** @type {Rect|null} */ (null));
 
@@ -68,6 +74,11 @@
 		x.set(0, opts);
 		y.set(0, opts);
 
+		bx.set(0, opts);
+		by.set(0, opts);
+		bw.set($W, opts);
+		bh.set($H, opts);
+
 		debugRect.set(localDebug ? { x: 0, y: 0, width: $W, height: $W } : null);
 
 		return api();
@@ -75,18 +86,13 @@
 
 	/**
 	 * Tween to a rectangle
-	 * @param {Rect & { duration?:number, easing?:EasingFn, debug?:boolean, bound?:boolean }} options
+	 * @param {Rect} rect
+	 * @param { duration?:number, easing?:EasingFn, debug?:boolean, bound?:boolean } options
 	 */
-	export function to({
-		x: objX,
-		y: objY,
-		width: objW,
-		height: objH,
-		duration: d,
-		easing: e,
-		debug: localDebug = debug,
-		bound: localBound = bound
-	}) {
+	export function to(
+		{ x: objX, y: objY, width: objW, height: objH },
+		{ duration: d, easing: e, debug: localDebug = debug, bound: localBound = bound } = {}
+	) {
 		if (!($W > 0 && $H > 0)) return api();
 		if (!(objW > 0 && objH > 0)) return api();
 
@@ -96,6 +102,12 @@
 		debugRect.set(localDebug ? target : null);
 
 		const opts = pickOpts(d, e);
+
+		bx.set(target.x, opts);
+		by.set(target.y, opts);
+		bw.set(target.width, opts);
+		bh.set(target.height, opts);
+
 		k.set(end.k, opts);
 		x.set(end.x, opts);
 		y.set(end.y, opts);
@@ -125,36 +137,50 @@
 		if (!Number.isFinite(te)) te = tc;
 
 		// interpolate the rect in object space
-		const rectRaw = {
+		const raw = {
 			x: lerp(a.x, b.x, te),
 			y: lerp(a.y, b.y, te),
 			width: lerp(a.width, b.width, te),
 			height: lerp(a.height, b.height, te)
 		};
 
+		bx.set(raw.x, { duration: 0 });
+		by.set(raw.y, { duration: 0 });
+		bw.set(raw.width, { duration: 0 });
+		bh.set(raw.height, { duration: 0 });
+
 		// clamp if bounded
-		const rectClamped = localBound ? clampRectToBounds(rectRaw, $W, $H) : rectRaw;
+		const target = localBound ? clampRectToBounds(raw, $W, $H) : raw;
 
 		// fit this instantaneous rect to get the correct view
-		const view = fit(rectClamped, localBound);
+		const end = fit(target, localBound);
 
 		// apply the view
-		k.set(view.k, { duration: 0 });
-		x.set(view.x, { duration: 0 });
-		y.set(view.y, { duration: 0 });
+		k.set(end.k, { duration: 0 });
+		x.set(end.x, { duration: 0 });
+		y.set(end.y, { duration: 0 });
 
-		debugRect.set(localDebug ? rectClamped : null);
+		debugRect.set(localDebug ? target : null);
 		return api();
 	}
 
-	const state = derived([k, x, y], ([$k, $x, $y]) => /** @type {View} */ ({ k: $k, x: $x, y: $y }));
+	const view = derived([k, x, y], ([$k, $x, $y]) => /** @type {View} */ ({ k: $k, x: $x, y: $y }));
 	/** @returns {import('svelte/store').Readable<View>} */
-	export function getState() {
-		return state;
+	export function getView() {
+		return view;
+	}
+
+	const box = derived(
+		[bx, by, bw, bh],
+		([$bx, $by, $bw, $bh]) => /** @type {Rect} */ ({ x: $bx, y: $by, width: $bw, height: $bh })
+	);
+	/** @returns {import('svelte/store').Readable<Rect>} */
+	export function getBox() {
+		return box;
 	}
 
 	function api() {
-		return { reset, to, interpolate, fit, getState };
+		return { reset, to, interpolate, fit, getView, getBox };
 	}
 
 	// Provide context to layers
@@ -162,14 +188,14 @@
 		k,
 		x,
 		y,
-		state,
+		view,
 		width: W,
 		height: H,
 		debugRect
 	});
 </script>
 
-<!-- Wrapper just provides context + slots the layers -->
+<!-- Wrapper provides context + slots the layers -->
 <div
 	class="panera"
 	style="position:relative; width: {width ? `${width}px` : '100%'}; height: {height
