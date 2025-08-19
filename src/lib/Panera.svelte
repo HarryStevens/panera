@@ -112,7 +112,7 @@
 	export function interpolate(
 		a,
 		b,
-		{ t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug }
+		{ t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug } = {}
 	) {
 		if (!($W > 0 && $H > 0)) return api();
 		if (!(a?.width > 0 && a?.height > 0)) return api();
