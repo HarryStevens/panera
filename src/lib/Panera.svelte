@@ -35,6 +35,11 @@
 	const debugRect = writable(/** @type {Rect|null} */ (null));
 
 	// helpers
+  /**
+   * @param {number | undefined} localDuration
+   * @param {EasingFn | undefined} localEasing
+   * @returns {{ duration: number, easing: EasingFn }}
+   */
 	const pickOpts = (localDuration, localEasing) => ({
 		duration: localDuration ?? duration,
 		easing: /** @type {EasingFn} */ (localEasing ?? easing)
