@@ -14,11 +14,13 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint .",
+    "format:check": "prettier --check .",
+		"lint": "eslint .",
 		"test:unit": "vitest",
 		"test": "pnpm run -s test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+    "prepublishOnly": "pnpm run format:check && pnpm run lint && pnpm run test"
 	},
 	"files": [
 		"dist",

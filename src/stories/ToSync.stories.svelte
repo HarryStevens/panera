@@ -151,7 +151,7 @@
             background: tomato;
             position: absolute;
             width: {width * 0.25}px;
-            height: {height *0.4}px;
+            height: {height * 0.4}px;
             left: {width * 0.1}px;
             top: {height * 0.1}px;"
 					/>

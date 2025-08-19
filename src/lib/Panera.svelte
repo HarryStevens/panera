@@ -100,43 +100,43 @@
 	 * @param {Rect} b
 	 * @param {{ t?:number, easing?:EasingFn, bound?:boolean, debug?:boolean }} [opts]
 	 */
-  export function interpolate(
-    a,
-    b,
-    { t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug } = {}
-  ) {
-    if (!($W > 0 && $H > 0)) return api();
-    if (!(a?.width > 0 && a?.height > 0)) return api();
-    if (!(b?.width > 0 && b?.height > 0)) return api();
+	export function interpolate(
+		a,
+		b,
+		{ t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug } = {}
+	) {
+		if (!($W > 0 && $H > 0)) return api();
+		if (!(a?.width > 0 && a?.height > 0)) return api();
+		if (!(b?.width > 0 && b?.height > 0)) return api();
 
-    // ease t (clamp input, allow eased overshoot)
-    const tc = Math.max(0, Math.min(1, t));
-    const ease = localEasing ?? easing ?? (u => u);
-    let te = ease(tc);
-    if (!Number.isFinite(te)) te = tc;
+		// ease t (clamp input, allow eased overshoot)
+		const tc = Math.max(0, Math.min(1, t));
+		const ease = localEasing ?? easing ?? ((u) => u);
+		let te = ease(tc);
+		if (!Number.isFinite(te)) te = tc;
 
-    // interpolate the rect in object space
-    const rectRaw = {
-      x: lerp(a.x, b.x, te),
-      y: lerp(a.y, b.y, te),
-      width: lerp(a.width, b.width, te),
-      height: lerp(a.height, b.height, te)
-    };
+		// interpolate the rect in object space
+		const rectRaw = {
+			x: lerp(a.x, b.x, te),
+			y: lerp(a.y, b.y, te),
+			width: lerp(a.width, b.width, te),
+			height: lerp(a.height, b.height, te)
+		};
 
-    // clamp if bounded
-    const rectClamped = localBound ? clampRectToBounds(rectRaw, $W, $H) : rectRaw;
+		// clamp if bounded
+		const rectClamped = localBound ? clampRectToBounds(rectRaw, $W, $H) : rectRaw;
 
-    // fit this instantaneous rect to get the correct view
-    const view = fit(rectClamped, localBound);
+		// fit this instantaneous rect to get the correct view
+		const view = fit(rectClamped, localBound);
 
-    // apply the view
-    k.set(view.k, { duration: 0 });
-    x.set(view.x, { duration: 0 });
-    y.set(view.y, { duration: 0 });
+		// apply the view
+		k.set(view.k, { duration: 0 });
+		x.set(view.x, { duration: 0 });
+		y.set(view.y, { duration: 0 });
 
-    debugRect.set(localDebug ? rectClamped : null);
-    return api();
-  }
+		debugRect.set(localDebug ? rectClamped : null);
+		return api();
+	}
 
 	const state = derived([k, x, y], ([$k, $x, $y]) => /** @type {View} */ ({ k: $k, x: $x, y: $y }));
 	/** @returns {import('svelte/store').Readable<View>} */
