@@ -27,10 +27,11 @@
 
 	// width/height as stores so layers react when they change
 	/** @type {import('svelte/store').Writable<number>} */
-	const W = writable(width);
+	const W = writable(width ?? 0);
 	/** @type {import('svelte/store').Writable<number>} */
-	const H = writable(height);
+	const H = writable(height ?? 0);
 
+	// keep stores numeric when props change
 	$: W.set(width ?? 0);
 	$: H.set(height ?? 0);
 
