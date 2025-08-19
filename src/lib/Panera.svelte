@@ -41,11 +41,11 @@
 	});
 
 	/** Fit a Rect to the container; returns a View.
-	 * @param {Rect} r
+	 * @param {Rect} rect
 	 * @param {boolean} [localBound=bound]
 	 * @returns {View}
 	 */
-	function fit(rect, localBound = bound) {
+	export function fit(rect, localBound = bound) {
 		return fitRectToContainer(rect, { width: $W, height: $H }, { bound: localBound });
 	}
 
@@ -100,47 +100,43 @@
 	 * @param {Rect} b
 	 * @param {{ t?:number, easing?:EasingFn, bound?:boolean, debug?:boolean }} [opts]
 	 */
-	export function interpolate(
-		a,
-		b,
-		{ t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug } = {}
-	) {
-		if (!($W > 0 && $H > 0)) return api();
-		if (!(a?.width > 0 && a?.height > 0)) return api();
-		if (!(b?.width > 0 && b?.height > 0)) return api();
+  export function interpolate(
+    a,
+    b,
+    { t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug } = {}
+  ) {
+    if (!($W > 0 && $H > 0)) return api();
+    if (!(a?.width > 0 && a?.height > 0)) return api();
+    if (!(b?.width > 0 && b?.height > 0)) return api();
 
-		const A = localBound ? clampRectToBounds(a, $W, $H) : a;
-		const B = localBound ? clampRectToBounds(b, $W, $H) : b;
-		const fa = fit(A, localBound);
-		const fb = fit(B, localBound);
+    // ease t (clamp input, allow eased overshoot)
+    const tc = Math.max(0, Math.min(1, t));
+    const ease = localEasing ?? easing ?? (u => u);
+    let te = ease(tc);
+    if (!Number.isFinite(te)) te = tc;
 
-		// clamp input t, then ease it (don’t clamp after ease so “elastic/back” can overshoot if desired)
-		const tc = Math.max(0, Math.min(1, t));
-		const ease = localEasing ?? easing ?? ((u) => u);
-		let te = ease(tc);
-		if (!Number.isFinite(te)) te = tc; // safety
+    // interpolate the rect in object space
+    const rectRaw = {
+      x: lerp(a.x, b.x, te),
+      y: lerp(a.y, b.y, te),
+      width: lerp(a.width, b.width, te),
+      height: lerp(a.height, b.height, te)
+    };
 
-		const tk = lerp(fa.k, fb.k, te);
-		const tx = lerp(fa.x, fb.x, te);
-		const ty = lerp(fa.y, fb.y, te);
+    // clamp if bounded
+    const rectClamped = localBound ? clampRectToBounds(rectRaw, $W, $H) : rectRaw;
 
-		if (localDebug) {
-			debugRect.set({
-				x: lerp(A.x, B.x, te),
-				y: lerp(A.y, B.y, te),
-				width: lerp(A.width, B.width, te),
-				height: lerp(A.height, B.height, te)
-			});
-		} else {
-			debugRect.set(null);
-		}
+    // fit this instantaneous rect to get the correct view
+    const view = fit(rectClamped, localBound);
 
-		k.set(tk, { duration: 0 });
-		x.set(tx, { duration: 0 });
-		y.set(ty, { duration: 0 });
+    // apply the view
+    k.set(view.k, { duration: 0 });
+    x.set(view.x, { duration: 0 });
+    y.set(view.y, { duration: 0 });
 
-		return api();
-	}
+    debugRect.set(localDebug ? rectClamped : null);
+    return api();
+  }
 
 	const state = derived([k, x, y], ([$k, $x, $y]) => /** @type {View} */ ({ k: $k, x: $x, y: $y }));
 	/** @returns {import('svelte/store').Readable<View>} */
@@ -149,7 +145,7 @@
 	}
 
 	function api() {
-		return { reset, to, interpolate, getState };
+		return { reset, to, interpolate, fit, getState };
 	}
 
 	// Provide context to layers
