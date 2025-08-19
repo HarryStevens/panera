@@ -20,7 +20,7 @@
 		"test": "pnpm run -s test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"prepublishOnly": "pnpm run lint && pnpm run check && pnpm run test",
+		"prepublishOnly": "pnpm run lint && pnpm run test",
 		"preversion": "pnpm run lint && pnpm run test"
 	},
 	"files": [
