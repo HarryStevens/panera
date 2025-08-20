@@ -191,7 +191,7 @@
           width: {height * 0.4}px;
           height: {height * 0.4}px;
           left: {width * 0.8 - height * 0.2}px;
-          top: {height * 0.4}px;
+          top: {height * 0.35}px;
           border-radius: 50%;"
 					></div>
 				</Html>
