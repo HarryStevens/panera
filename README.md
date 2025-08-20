@@ -108,13 +108,6 @@ pnpm prepack      # build library to dist/ (svelte-package + publint)
 pnpm pack         # output a tarball
 ```
 
-### Tests
-
-Core math is tested in `src/lib/core.spec.js`:
-
-- `fitRectToContainer` (aspect fit + bounds)
-- `lerp`
-
 ## License
 
 MIT
