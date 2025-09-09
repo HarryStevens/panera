@@ -18,7 +18,8 @@
 	/** @type {number} */ export let duration = 1000;
 	/** @type {EasingFn} */ export let easing = cubicInOut;
 	/** @type {boolean} */ export let bound = true;
-	/** @type {boolean} */ export let debug = false;
+	/** @type {boolean} */ export let debugBox = false;
+	/** @type {boolean} */ export let debugZoom = false;
 
 	// Internal state stores
 	const k = tweened(1, { duration: 0 });
@@ -66,20 +67,28 @@
 
 	/**
 	 * Reset the view back to k=1, x=0, y=0.
-	 * @param {{ duration?: number, easing?: EasingFn, debug?: boolean }} [opts]
+	 * @param {{ duration?: number, easing?: EasingFn, debugBox?: boolean, debugZoom?:boolean }} [opts]
 	 */
-	export function reset({ duration: d, easing: e, debug: localDebug = debug } = {}) {
+	export function reset({
+		duration: d,
+		easing: e,
+		debugBox: localDebugBox = debugBox,
+		debugZoom: localDebugZoom = debugZoom
+	} = {}) {
 		const opts = pickOpts(d, e);
-		k.set(1, opts);
-		x.set(0, opts);
-		y.set(0, opts);
+
+		if (!localDebugZoom) {
+			k.set(1, opts);
+			x.set(0, opts);
+			y.set(0, opts);
+		}
 
 		bx.set(0, opts);
 		by.set(0, opts);
 		bw.set($W, opts);
 		bh.set($H, opts);
 
-		debugRect.set(localDebug ? { x: 0, y: 0, width: $W, height: $W } : null);
+		debugRect.set(localDebugBox ? { x: 0, y: 0, width: $W, height: $W } : null);
 
 		return api();
 	}
@@ -87,11 +96,17 @@
 	/**
 	 * Tween to a rectangle
 	 * @param {Rect} rect
-	 * @param { duration?:number, easing?:EasingFn, debug?:boolean, bound?:boolean } options
+	 * @param { duration?:number, easing?:EasingFn, debugBox?:boolean, debugZoom?:boolean, bound?:boolean } [opts]
 	 */
 	export function to(
 		{ x: objX, y: objY, width: objW, height: objH },
-		{ duration: d, easing: e, debug: localDebug = debug, bound: localBound = bound } = {}
+		{
+			duration: d,
+			easing: e,
+			debugBox: localDebugBox = debugBox,
+			bound: localBound = bound,
+			debugZoom: localDebugZoom = debugZoom
+		} = {}
 	) {
 		if (!($W > 0 && $H > 0)) return api();
 		if (!(objW > 0 && objH > 0)) return api();
@@ -99,7 +114,7 @@
 		const raw = { x: objX, y: objY, width: objW, height: objH };
 		const target = localBound ? clampRectToBounds(raw, $W, $H) : raw;
 		const end = fit(target, localBound);
-		debugRect.set(localDebug ? target : null);
+		debugRect.set(localDebugBox ? target : null);
 
 		const opts = pickOpts(d, e);
 
@@ -108,9 +123,11 @@
 		bw.set(target.width, opts);
 		bh.set(target.height, opts);
 
-		k.set(end.k, opts);
-		x.set(end.x, opts);
-		y.set(end.y, opts);
+		if (!localDebugZoom) {
+			k.set(end.k, opts);
+			x.set(end.x, opts);
+			y.set(end.y, opts);
+		}
 
 		return api();
 	}
@@ -119,12 +136,18 @@
 	 * Interpolate between two rectangles at t∈[0,1]
 	 * @param {Rect} a
 	 * @param {Rect} b
-	 * @param {{ t?:number, easing?:EasingFn, bound?:boolean, debug?:boolean }} [opts]
+	 * @param {{ t?:number, easing?:EasingFn, bound?:boolean, debugBox?:boolean, debugZoom?:boolean }} [opts]
 	 */
 	export function interpolate(
 		a,
 		b,
-		{ t = 0, easing: localEasing, bound: localBound = bound, debug: localDebug = debug } = {}
+		{
+			t = 0,
+			easing: localEasing,
+			bound: localBound = bound,
+			debugBox: localDebugBox = debugBox,
+			debugZoom: localDebugZoom = debugZoom
+		} = {}
 	) {
 		if (!($W > 0 && $H > 0)) return api();
 		if (!(a?.width > 0 && a?.height > 0)) return api();
@@ -156,11 +179,13 @@
 		const end = fit(target, localBound);
 
 		// apply the view
-		k.set(end.k, { duration: 0 });
-		x.set(end.x, { duration: 0 });
-		y.set(end.y, { duration: 0 });
+		if (!localDebugZoom) {
+			k.set(end.k, { duration: 0 });
+			x.set(end.x, { duration: 0 });
+			y.set(end.y, { duration: 0 });
+		}
 
-		debugRect.set(localDebug ? target : null);
+		debugRect.set(localDebugBox ? target : null);
 		return api();
 	}
 

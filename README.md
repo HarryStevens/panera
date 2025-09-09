@@ -51,22 +51,23 @@ Peer requirement: svelte ^4 || ^5
 - `duration?: number` — default 1000 ms (used by `to()` & `reset()`)
 - `easing?: (t:number)=>number` — default `cubicInOut`
 - `bound?: boolean` — clamp view inside container (default `true`)
-- `debug?: boolean` — overlay a non-scaling red debug rect (default `false`)
+- `debugBox?: boolean` — overlay a non-scaling red debug rect (default `false`)
+- `debugZoom?: boolean` — disable zooming, helpful in conjuction with `debugBox` (default `false`)
 
 ### Methods (via `bind:this`)
 
 - `reset(opts?)`<br/>
-  `opts = { duration?: number, easing?: (t)=>number, debug?: boolean }`<br/>
+  `opts = { duration?: number, easing?: (t)=>number, debugBox?, debugZoom? }`<br/>
   Reset the view back to k=1, x=0, y=0.
 
 - `to(rect, opts?)`<br/>
   `rect = {x, y, width, height}`<br/>
-  `opts = { duration?, easing?, debug?, bound? }`<br/>
+  `opts = { duration?, easing?, bound?, debugBox?, debugZoom? }`<br/>
   Tweens to the fitted view of the rectangle.
 
 - `interpolate(a, b, opts?)`<br/>
   `a = { x, y, width, height }, b = { x, y, width, height }`<br/>
-  `opts = { t?: number, easing?: (t)=>number, bound?: boolean, debug?: boolean }`<br/>
+  `opts = { t?: number, easing?: (t)=>number, bound?, debugBox?, debugZoom? }`<br/>
   Instant scrub (no tween). Fits both a and b, then blends view using t (after easing).
 
 - `getView(): Readable<{ k:number, x:number, y:number }>`<br/>
@@ -92,12 +93,6 @@ Peer requirement: svelte ^4 || ^5
   `transform: scale(k) translate(xpx, ypx); transform-origin: 0 0;`<br/>
   Place children with `position:absolute; left/top` in object coordinates.
 
-## Notes
-
-- **SSR-safe**: Canvas guards `window`/`devicePixelRatio`.
-- **Transforms**: All layers use the same order — `scale(k)` then `translate(x, y)` — so coordinates match.
-- **Bounds**: When `bound: true`, content is clamped so edges don’t show outside the container.
-
 ## Development
 
 ```bash
@@ -105,6 +100,7 @@ pnpm format       # prettier
 pnpm lint         # prettier check + eslint
 pnpm test         # vitest unit tests
 pnpm prepack      # build library to dist/ (svelte-package + publint)
+pnpm storybook    # run the local storybook page
 pnpm pack         # output a tarball
 ```
 

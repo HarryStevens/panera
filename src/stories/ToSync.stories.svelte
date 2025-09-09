@@ -13,7 +13,8 @@
 		height = 100;
 
 	let selectedBound = true;
-	let selectedDebug = false;
+	let selectedDebugBox = false;
+  let selectedDebugZoom = false;
 	let selectedDuration = 1000;
 	let selectedEase = 'cubicInOut';
 
@@ -76,8 +77,13 @@
 				</div>
 
 				<div class="g-input">
-					<label for="input-debug">Debug:</label>
-					<input type="checkbox" bind:checked={selectedDebug} />
+					<label for="input-debug">Debug box:</label>
+					<input type="checkbox" bind:checked={selectedDebugBox} />
+				</div>
+
+				<div class="g-input">
+					<label for="input-debug">Debug zoom:</label>
+					<input type="checkbox" bind:checked={selectedDebugZoom} />
 				</div>
 			</div>
 
@@ -95,7 +101,8 @@
 				{width}
 				{height}
 				bound={selectedBound}
-				debug={selectedDebug}
+				debugBox={selectedDebugBox}
+        debugZoom={selectedDebugZoom}
 				duration={selectedDuration}
 				easing={easingMap[selectedEase]}
 			>
@@ -127,7 +134,8 @@
 				{height}
 				bound={selectedBound}
 				easing={easingMap[selectedEase]}
-				debug={selectedDebug}
+				debugBox={selectedDebugBox}
+        debugZoom={selectedDebugZoom}
 				duration={selectedDuration}
 			>
 				<Canvas {render} />
@@ -142,7 +150,8 @@
 				{height}
 				bound={selectedBound}
 				easing={easingMap[selectedEase]}
-				debug={selectedDebug}
+				debugBox={selectedDebugBox}
+        debugZoom={selectedDebugZoom}
 				duration={selectedDuration}
 			>
 				<Html>

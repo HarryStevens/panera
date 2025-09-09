@@ -13,7 +13,8 @@
 		height = 100;
 
 	let selectedBound = true;
-	let selectedDebug = false;
+	let selectedDebugBox = false;
+  let selectedDebugZoom = false;
 	let selectedEase = 'cubicInOut';
 
 	// use string ids for selects
@@ -48,9 +49,9 @@
 		if (svg && canvas && width && height) {
 			const a = box(selectedAKey);
 			const b = box(selectedBKey);
-			svg.interpolate(a, b, { t: selectedT, bound: selectedBound, debug: selectedDebug });
-			canvas.interpolate(a, b, { t: selectedT, bound: selectedBound, debug: selectedDebug });
-			html.interpolate(a, b, { t: selectedT, bound: selectedBound, debug: selectedDebug });
+			svg.interpolate(a, b, { t: selectedT, bound: selectedBound, debugBox: selectedDebugBox, debugZoom: selectedDebugZoom });
+			canvas.interpolate(a, b, { t: selectedT, bound: selectedBound, debugBox: selectedDebugBox, debugZoom: selectedDebugZoom });
+			html.interpolate(a, b, { t: selectedT, bound: selectedBound, debugBox: selectedDebugBox, debugZoom: selectedDebugZoom });
 		}
 	}
 
@@ -88,8 +89,12 @@
 					<input type="checkbox" bind:checked={selectedBound} />
 				</div>
 				<div class="g-input">
-					<label>Debug:</label>
-					<input type="checkbox" bind:checked={selectedDebug} />
+					<label>Debug box:</label>
+					<input type="checkbox" bind:checked={selectedDebugBox} />
+				</div>
+				<div class="g-input">
+					<label>Debug zoom:</label>
+					<input type="checkbox" bind:checked={selectedDebugZoom} />
 				</div>
 			</div>
 
@@ -127,7 +132,8 @@
 				{width}
 				{height}
 				bound={selectedBound}
-				debug={selectedDebug}
+				debugBox={selectedDebugBox}
+        debugZoom={selectedDebugZoom}
 				easing={easingMap[selectedEase]}
 			>
 				<Svg>
@@ -157,7 +163,8 @@
 				{width}
 				{height}
 				bound={selectedBound}
-				debug={selectedDebug}
+				debugBox={selectedDebugBox}
+        debugZoom={selectedDebugZoom}
 				easing={easingMap[selectedEase]}
 			>
 				<Canvas {render} />
@@ -172,7 +179,8 @@
 				{height}
 				bound={selectedBound}
 				easing={easingMap[selectedEase]}
-				debug={selectedDebug}
+				debugBox={selectedDebugBox}
+        debugZoom={selectedDebugZoom}
 			>
 				<Html>
 					<div
