@@ -14,7 +14,7 @@
 
 	let selectedBound = true;
 	let selectedDebugBox = false;
-  let selectedDebugZoom = false;
+	let selectedDebugZoom = false;
 	let selectedEase = 'cubicInOut';
 
 	// use string ids for selects
@@ -49,9 +49,24 @@
 		if (svg && canvas && width && height) {
 			const a = box(selectedAKey);
 			const b = box(selectedBKey);
-			svg.interpolate(a, b, { t: selectedT, bound: selectedBound, debugBox: selectedDebugBox, debugZoom: selectedDebugZoom });
-			canvas.interpolate(a, b, { t: selectedT, bound: selectedBound, debugBox: selectedDebugBox, debugZoom: selectedDebugZoom });
-			html.interpolate(a, b, { t: selectedT, bound: selectedBound, debugBox: selectedDebugBox, debugZoom: selectedDebugZoom });
+			svg.interpolate(a, b, {
+				t: selectedT,
+				bound: selectedBound,
+				debugBox: selectedDebugBox,
+				debugZoom: selectedDebugZoom
+			});
+			canvas.interpolate(a, b, {
+				t: selectedT,
+				bound: selectedBound,
+				debugBox: selectedDebugBox,
+				debugZoom: selectedDebugZoom
+			});
+			html.interpolate(a, b, {
+				t: selectedT,
+				bound: selectedBound,
+				debugBox: selectedDebugBox,
+				debugZoom: selectedDebugZoom
+			});
 		}
 	}
 
@@ -133,7 +148,7 @@
 				{height}
 				bound={selectedBound}
 				debugBox={selectedDebugBox}
-        debugZoom={selectedDebugZoom}
+				debugZoom={selectedDebugZoom}
 				easing={easingMap[selectedEase]}
 			>
 				<Svg>
@@ -164,7 +179,7 @@
 				{height}
 				bound={selectedBound}
 				debugBox={selectedDebugBox}
-        debugZoom={selectedDebugZoom}
+				debugZoom={selectedDebugZoom}
 				easing={easingMap[selectedEase]}
 			>
 				<Canvas {render} />
@@ -180,7 +195,7 @@
 				bound={selectedBound}
 				easing={easingMap[selectedEase]}
 				debugBox={selectedDebugBox}
-        debugZoom={selectedDebugZoom}
+				debugZoom={selectedDebugZoom}
 			>
 				<Html>
 					<div

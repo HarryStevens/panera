@@ -14,7 +14,7 @@
 
 	let selectedBound = true;
 	let selectedDebugBox = false;
-  let selectedDebugZoom = false;
+	let selectedDebugZoom = false;
 	let selectedDuration = 1000;
 	let selectedEase = 'cubicInOut';
 
@@ -102,7 +102,7 @@
 				{height}
 				bound={selectedBound}
 				debugBox={selectedDebugBox}
-        debugZoom={selectedDebugZoom}
+				debugZoom={selectedDebugZoom}
 				duration={selectedDuration}
 				easing={easingMap[selectedEase]}
 			>
@@ -135,7 +135,7 @@
 				bound={selectedBound}
 				easing={easingMap[selectedEase]}
 				debugBox={selectedDebugBox}
-        debugZoom={selectedDebugZoom}
+				debugZoom={selectedDebugZoom}
 				duration={selectedDuration}
 			>
 				<Canvas {render} />
@@ -151,7 +151,7 @@
 				bound={selectedBound}
 				easing={easingMap[selectedEase]}
 				debugBox={selectedDebugBox}
-        debugZoom={selectedDebugZoom}
+				debugZoom={selectedDebugZoom}
 				duration={selectedDuration}
 			>
 				<Html>
